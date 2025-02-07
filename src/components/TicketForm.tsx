@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { format, parse } from "date-fns";
 
 const TicketForm = () => {
   const navigate = useNavigate();
@@ -29,13 +30,16 @@ const TicketForm = () => {
     }
 
     try {
+      // Parse the formatted date back to ISO string for database storage
+      const parsedDate = parse(formData.dateTime, "EEE MMM d, h:mm a", new Date());
+      
       const { data, error } = await supabase.from('tickets').insert([{
         sec: formData.sec,
         row_number: formData.row,
         seat: formData.sit,
         title: formData.title,
         venue: formData.venue,
-        date_time: new Date(formData.dateTime).toISOString(), // Convert to ISO string
+        date_time: parsedDate.toISOString(),
       }]).select();
 
       if (error) throw error;
@@ -47,7 +51,16 @@ const TicketForm = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    if (name === 'dateTime' && value) {
+      // Convert the input datetime-local value to our desired format
+      const date = new Date(value);
+      const formattedDate = format(date, "EEE MMM d, h:mm a");
+      setFormData({ ...formData, [name]: formattedDate });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   return (
