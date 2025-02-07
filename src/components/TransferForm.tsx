@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const TransferForm = () => {
   const navigate = useNavigate();
@@ -13,12 +14,25 @@ const TransferForm = () => {
     lastName: "",
     contact: "",
     note: "",
+    ticketCount: 2,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle transfer logic here
-    navigate("/success");
+    try {
+      const { data, error } = await supabase.from('transfers').insert([{
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        contact: formData.contact,
+        note: formData.note,
+        quantity: formData.ticketCount,
+      }]).select();
+
+      if (error) throw error;
+      navigate("/success");
+    } catch (error) {
+      console.error('Error creating transfer:', error);
+    }
   };
 
   return (
@@ -36,7 +50,7 @@ const TransferForm = () => {
 
       <Card className="p-6">
         <h2 className="text-2xl font-bold mb-6 text-center">TRANSFER TICKETS</h2>
-        <p className="text-gray-600 mb-6 text-center">2 Tickets Selected</p>
+        <p className="text-gray-600 mb-6 text-center">{formData.ticketCount} Tickets Selected</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -95,7 +109,7 @@ const TransferForm = () => {
             type="submit"
             className="w-full bg-ticket-blue hover:bg-ticket-darkBlue text-white py-3 rounded-lg transition-colors"
           >
-            Transfer 2 Tickets
+            Transfer {formData.ticketCount} Tickets
           </Button>
         </form>
       </Card>

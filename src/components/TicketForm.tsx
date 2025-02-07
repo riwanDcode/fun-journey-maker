@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const TicketForm = () => {
   const navigate = useNavigate();
@@ -18,9 +19,24 @@ const TicketForm = () => {
     dateTime: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/preview", { state: formData });
+    try {
+      const { data, error } = await supabase.from('tickets').insert([{
+        sec: formData.sec,
+        row_number: formData.row,
+        seat: formData.sit,
+        title: formData.title,
+        venue: formData.venue,
+        date_time: formData.dateTime,
+      }]).select();
+
+      if (error) throw error;
+
+      navigate("/preview", { state: formData });
+    } catch (error) {
+      console.error('Error creating ticket:', error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -9,7 +9,92 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      tickets: {
+        Row: {
+          barcode: string | null
+          created_at: string | null
+          date_time: string
+          event_images: string[] | null
+          id: string
+          row_number: string
+          seat: string
+          sec: string
+          status: string | null
+          title: string
+          venue: string
+        }
+        Insert: {
+          barcode?: string | null
+          created_at?: string | null
+          date_time: string
+          event_images?: string[] | null
+          id?: string
+          row_number: string
+          seat: string
+          sec: string
+          status?: string | null
+          title: string
+          venue: string
+        }
+        Update: {
+          barcode?: string | null
+          created_at?: string | null
+          date_time?: string
+          event_images?: string[] | null
+          id?: string
+          row_number?: string
+          seat?: string
+          sec?: string
+          status?: string | null
+          title?: string
+          venue?: string
+        }
+        Relationships: []
+      }
+      transfers: {
+        Row: {
+          contact: string
+          created_at: string | null
+          first_name: string
+          id: string
+          last_name: string
+          note: string | null
+          quantity: number
+          status: string | null
+          ticket_id: string | null
+        }
+        Insert: {
+          contact: string
+          created_at?: string | null
+          first_name: string
+          id?: string
+          last_name: string
+          note?: string | null
+          quantity: number
+          status?: string | null
+          ticket_id?: string | null
+        }
+        Update: {
+          contact?: string
+          created_at?: string | null
+          first_name?: string
+          id?: string
+          last_name?: string
+          note?: string | null
+          quantity?: number
+          status?: string | null
+          ticket_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transfers_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
