@@ -21,6 +21,13 @@ const TicketForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate required fields
+    if (!formData.dateTime) {
+      console.error('Date and time is required');
+      return;
+    }
+
     try {
       const { data, error } = await supabase.from('tickets').insert([{
         sec: formData.sec,
@@ -28,7 +35,7 @@ const TicketForm = () => {
         seat: formData.sit,
         title: formData.title,
         venue: formData.venue,
-        date_time: formData.dateTime,
+        date_time: new Date(formData.dateTime).toISOString(), // Convert to ISO string
       }]).select();
 
       if (error) throw error;
@@ -54,6 +61,7 @@ const TicketForm = () => {
             onChange={handleChange}
             className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
             placeholder="111"
+            required
           />
         </div>
         <div className="group">
@@ -64,6 +72,7 @@ const TicketForm = () => {
             onChange={handleChange}
             className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
             placeholder="11"
+            required
           />
         </div>
         <div className="group">
@@ -74,6 +83,7 @@ const TicketForm = () => {
             onChange={handleChange}
             className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
             placeholder="4"
+            required
           />
         </div>
       </div>
@@ -86,6 +96,7 @@ const TicketForm = () => {
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
           placeholder="3"
+          required
         />
       </div>
 
@@ -107,6 +118,7 @@ const TicketForm = () => {
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
           placeholder="Concert Name"
+          required
         />
       </div>
 
@@ -118,6 +130,7 @@ const TicketForm = () => {
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
           placeholder="Venue Name"
+          required
         />
       </div>
 
@@ -129,6 +142,7 @@ const TicketForm = () => {
           value={formData.dateTime}
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
+          required
         />
       </div>
 
