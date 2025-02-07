@@ -41,46 +41,46 @@ const TransferForm = () => {
         <Button
           variant="ghost"
           onClick={() => navigate(-1)}
-          className="text-ticket-blue"
+          className="text-ticket-blue hover:bg-blue-50 transition-colors"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           BACK
         </Button>
       </div>
 
-      <Card className="p-6">
-        <h2 className="text-2xl font-bold mb-6 text-center">TRANSFER TICKETS</h2>
+      <Card className="p-6 hover:shadow-xl transition-all duration-300">
+        <h2 className="text-2xl font-bold mb-6 text-center hover:text-ticket-blue transition-colors">TRANSFER TICKETS</h2>
         <p className="text-gray-600 mb-6 text-center">{formData.ticketCount} Tickets Selected</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="text-sm font-medium text-gray-700">First Name</label>
+          <div className="group">
+            <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">First Name</label>
             <Input
               name="firstName"
               value={formData.firstName}
               onChange={(e) =>
                 setFormData({ ...formData, firstName: e.target.value })
               }
-              className="mt-1"
+              className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
               placeholder="First Name"
             />
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-gray-700">Last Name</label>
+          <div className="group">
+            <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">Last Name</label>
             <Input
               name="lastName"
               value={formData.lastName}
               onChange={(e) =>
                 setFormData({ ...formData, lastName: e.target.value })
               }
-              className="mt-1"
+              className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
               placeholder="Last Name"
             />
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-gray-700">
+          <div className="group">
+            <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">
               Email or Mobile Number
             </label>
             <Input
@@ -89,25 +89,25 @@ const TransferForm = () => {
               onChange={(e) =>
                 setFormData({ ...formData, contact: e.target.value })
               }
-              className="mt-1"
+              className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
               placeholder="email@example.com"
             />
           </div>
 
-          <div>
-            <label className="text-sm font-medium text-gray-700">Note</label>
+          <div className="group">
+            <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">Note</label>
             <Input
               name="note"
               value={formData.note}
               onChange={(e) => setFormData({ ...formData, note: e.target.value })}
-              className="mt-1"
+              className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
               placeholder="Add a note (optional)"
             />
           </div>
 
           <Button
             type="submit"
-            className="w-full bg-ticket-blue hover:bg-ticket-darkBlue text-white py-3 rounded-lg transition-colors"
+            className="w-full bg-ticket-blue hover:bg-ticket-darkBlue text-white py-3 rounded-lg transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
           >
             Transfer {formData.ticketCount} Tickets
           </Button>
