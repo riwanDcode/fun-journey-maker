@@ -9,7 +9,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import { useState } from "react";
 
 interface TicketPreviewProps {
   ticketData: {
@@ -24,13 +23,11 @@ interface TicketPreviewProps {
 
 const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
   const navigate = useNavigate();
-  const [currentImage, setCurrentImage] = useState(0);
 
-  // Placeholder images - replace with actual Justin Timberlake images
   const images = [
-    "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
-    "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    "https://asset.cloudinary.com/del59phog/01a7224285dd52a09cbb8d2fce3c9518",
+    "https://asset.cloudinary.com/del59phog/32694d3b68aeb490010beb1420f2aa3f",
+    "https://asset.cloudinary.com/del59phog/06ba239f573b08c6fbb97797f4e6d065",
   ];
 
   return (
@@ -42,7 +39,7 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
               <div className="relative aspect-[4/3] w-full">
                 <img
                   src={image}
-                  alt={`Event ${index + 1}`}
+                  alt={`Justin Timberlake ${index + 1}`}
                   className="object-cover w-full h-full"
                 />
               </div>
