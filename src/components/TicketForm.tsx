@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { format, parse } from "date-fns";
+import { parse, format } from "date-fns";
 
 const TicketForm = () => {
   const navigate = useNavigate();
@@ -29,16 +29,23 @@ const TicketForm = () => {
     }
 
     try {
+      // Parse the input date string and format it to ISO string for PostgreSQL
+      const parsedDate = parse(formData.dateTime, 'EEE, MMM d h:mm a', new Date());
+      const formattedDate = parsedDate.toISOString();
+
       const { data, error } = await supabase.from('tickets').insert([{
         sec: formData.sec,
         row_number: formData.row,
         seat: formData.sit,
         title: formData.title,
         venue: formData.venue,
-        date_time: formData.dateTime,
+        date_time: formattedDate,
       }]).select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error:', error);
+        throw error;
+      }
 
       navigate("/preview", { state: formData });
     } catch (error) {
