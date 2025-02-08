@@ -24,6 +24,21 @@ interface TicketPreviewProps {
 const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
   const navigate = useNavigate();
 
+  // Add validation check
+  if (!ticketData || !ticketData.sec) {
+    return (
+      <Card className="w-full max-w-md mx-auto p-6 text-center">
+        <p className="text-gray-600">No ticket data available</p>
+        <Button 
+          onClick={() => navigate("/")}
+          className="mt-4 bg-ticket-blue hover:bg-ticket-darkBlue text-white"
+        >
+          Go to Home
+        </Button>
+      </Card>
+    );
+  }
+
   const images = [
     "/lovable-uploads/eff634fc-bc01-4e98-abe0-e0835f2f6494.png",
     "/lovable-uploads/4797d1cc-167a-4abc-89b8-103acc55c78e.png",
