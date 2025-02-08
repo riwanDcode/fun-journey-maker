@@ -23,23 +23,19 @@ const TicketForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate required fields
     if (!formData.dateTime) {
       console.error('Date and time is required');
       return;
     }
 
     try {
-      // Parse the formatted date back to ISO string for database storage
-      const parsedDate = parse(formData.dateTime, "EEE MMM d, h:mm a", new Date());
-      
       const { data, error } = await supabase.from('tickets').insert([{
         sec: formData.sec,
         row_number: formData.row,
         seat: formData.sit,
         title: formData.title,
         venue: formData.venue,
-        date_time: parsedDate.toISOString(),
+        date_time: formData.dateTime,
       }]).select();
 
       if (error) throw error;
@@ -52,15 +48,7 @@ const TicketForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
-    if (name === 'dateTime' && value) {
-      // Convert the input datetime-local value to our desired format
-      const date = new Date(value);
-      const formattedDate = format(date, "EEE MMM d, h:mm a");
-      setFormData({ ...formData, [name]: formattedDate });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -73,7 +61,7 @@ const TicketForm = () => {
             value={formData.sec}
             onChange={handleChange}
             className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-            placeholder="111"
+            placeholder="GA Floor"
             required
           />
         </div>
@@ -84,43 +72,21 @@ const TicketForm = () => {
             value={formData.row}
             onChange={handleChange}
             className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-            placeholder="11"
+            placeholder="GA"
             required
           />
         </div>
         <div className="group">
-          <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">SIT</label>
+          <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">SEAT</label>
           <Input
             name="sit"
             value={formData.sit}
             onChange={handleChange}
             className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-            placeholder="4"
+            placeholder="-"
             required
           />
         </div>
-      </div>
-
-      <div className="group">
-        <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">How many tickets?</label>
-        <Input
-          name="ticketCount"
-          value={formData.ticketCount}
-          onChange={handleChange}
-          className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-          placeholder="3"
-          required
-        />
-      </div>
-
-      <div className="group">
-        <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">Other SIT (OPTIONAL)</label>
-        <Input
-          name="otherSit"
-          value={formData.otherSit}
-          onChange={handleChange}
-          className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-        />
       </div>
 
       <div className="group">
@@ -130,7 +96,7 @@ const TicketForm = () => {
           value={formData.title}
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-          placeholder="Concert Name"
+          placeholder="Justin Timberlake - Forget Tomorrow World Tour"
           required
         />
       </div>
@@ -142,7 +108,7 @@ const TicketForm = () => {
           value={formData.venue}
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-          placeholder="Venue Name"
+          placeholder="Moody Center - Austin"
           required
         />
       </div>
@@ -151,10 +117,10 @@ const TicketForm = () => {
         <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">Date & Time</label>
         <Input
           name="dateTime"
-          type="datetime-local"
           value={formData.dateTime}
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
+          placeholder="Mon, Feb 03 7:30 PM"
           required
         />
       </div>
