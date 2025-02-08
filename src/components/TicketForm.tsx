@@ -5,7 +5,10 @@ import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { parse } from "date-fns";
 import { useToast } from "./ui/use-toast";
-import DatePicker from "react-datepicker";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+import dayjs from 'dayjs';
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 
@@ -25,10 +28,10 @@ const TicketForm = () => {
     dateTime: "",
   });
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+  const handleDateChange = (date: dayjs.Dayjs | null) => {
+    setSelectedDate(date?.toDate() || null);
     if (date) {
-      const formattedDate = format(date, 'EEE, MMM d h:mm a');
+      const formattedDate = date.format('ddd, MMM D h:mm A');
       setFormData(prev => ({ ...prev, dateTime: formattedDate }));
     }
   };
@@ -207,23 +210,21 @@ const TicketForm = () => {
         <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors mb-1">
           Date & Time
         </label>
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          showTimeSelect
-          timeFormat="h:mm aa"
-          timeIntervals={15}
-          timeCaption="Time"
-          dateFormat="EEE, MMM d h:mm aa"
-          placeholderText="Mon, Feb 03 7:30 PM"
-          className="w-full p-2 border rounded-md transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-          required
-          popperClassName="react-datepicker-popper"
-          calendarClassName="react-datepicker"
-          popperPlacement="bottom-start"
-          shouldCloseOnSelect={true}
-          showPopperArrow={false}
-        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <MobileDateTimePicker
+            value={selectedDate ? dayjs(selectedDate) : null}
+            onChange={handleDateChange}
+            format="ddd, MMM D h:mm A"
+            className="w-full"
+            slotProps={{
+              textField: {
+                required: true,
+                placeholder: "Mon, Feb 03 7:30 PM",
+                className: "w-full p-2 border rounded-md transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
+              }
+            }}
+          />
+        </LocalizationProvider>
       </div>
 
       <Button

@@ -41,21 +41,6 @@
   color: #888;
 }
 
-/* DatePicker Portal Styles */
-#datepicker-portal .react-datepicker-popper {
-  z-index: 9999;
-}
+/* ...existing root styles... */
 
-.react-datepicker__time-container {
-  width: 120px;
-}
-
-.react-datepicker__header--time {
-  padding: 8px;
-}
-
-.react-datepicker-popper {
-  transform: none !important;
-  inset: auto !important;
-  position: fixed !important;
-}
+/* Remove all react-datepicker related styles */
