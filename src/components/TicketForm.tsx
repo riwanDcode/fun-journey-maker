@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "./ui/input";
@@ -6,10 +5,14 @@ import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { parse } from "date-fns";
 import { useToast } from "./ui/use-toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 const TicketForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [formData, setFormData] = useState({
     sec: "",
     row: "",
@@ -21,6 +24,14 @@ const TicketForm = () => {
     imageUrl: "",
     dateTime: "",
   });
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+    if (date) {
+      const formattedDate = format(date, 'EEE, MMM d h:mm a');
+      setFormData(prev => ({ ...prev, dateTime: formattedDate }));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -151,13 +162,27 @@ const TicketForm = () => {
       </div>
 
       <div className="group">
-        <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">Date & Time</label>
+        <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">Image URL</label>
         <Input
-          name="dateTime"
-          value={formData.dateTime}
+          name="imageUrl"
+          value={formData.imageUrl}
           onChange={handleChange}
           className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
-          placeholder="Mon, Feb 03 7:30 PM"
+          placeholder="https://example.com/image.jpg"
+        />
+      </div>
+
+      <div className="group flex flex-col">
+        <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors mb-1">
+          Date & Time
+        </label>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          showTimeSelect
+          dateFormat="EEE, MMM d h:mm aa"
+          placeholderText="Mon, Feb 03 7:30 PM"
+          className="w-full p-2 border rounded-md transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
           required
         />
       </div>
