@@ -137,6 +137,37 @@ const TicketForm = () => {
         </div>
       </div>
 
+      {/* Modified ticket count and other sit section */}
+      <div className="space-y-4">
+        <div className="group">
+          <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">
+            How many tickets?
+          </label>
+          <Input
+            name="ticketCount"
+            type="number"
+            min="1"
+            value={formData.ticketCount}
+            onChange={handleChange}
+            className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
+            placeholder="1"
+            required
+          />
+        </div>
+        <div className="group">
+          <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">
+            Other SIT (Optional)
+          </label>
+          <Input
+            name="otherSit"
+            value={formData.otherSit}
+            onChange={handleChange}
+            className="mt-1 transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
+            placeholder="e.g. 12, 13, 14"
+          />
+        </div>
+      </div>
+
       <div className="group">
         <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors">Title</label>
         <Input
@@ -172,7 +203,7 @@ const TicketForm = () => {
         />
       </div>
 
-      <div className="group flex flex-col">
+      <div className="group flex flex-col relative z-50">
         <label className="text-sm font-medium text-gray-700 group-hover:text-ticket-blue transition-colors mb-1">
           Date & Time
         </label>
@@ -180,10 +211,18 @@ const TicketForm = () => {
           selected={selectedDate}
           onChange={handleDateChange}
           showTimeSelect
+          timeFormat="h:mm aa"
+          timeIntervals={15}
+          timeCaption="Time"
           dateFormat="EEE, MMM d h:mm aa"
           placeholderText="Mon, Feb 03 7:30 PM"
           className="w-full p-2 border rounded-md transition-all duration-300 hover:border-ticket-blue focus:ring-2 focus:ring-ticket-blue"
           required
+          popperClassName="react-datepicker-popper"
+          calendarClassName="react-datepicker"
+          popperPlacement="bottom-start"
+          shouldCloseOnSelect={true}
+          showPopperArrow={false}
         />
       </div>
 

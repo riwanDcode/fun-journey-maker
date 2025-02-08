@@ -13,6 +13,7 @@ interface TicketPreviewProps {
     title: string;
     venue: string;
     dateTime: string;
+    ticketCount?: number; // Add ticketCount
   };
 }
 
@@ -50,19 +51,19 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
           <h2 className="text-lg font-semibold text-center">Standard Ticket</h2>
         </div>
 
-        <div className="bg-[#007AFF] text-white p-6">
-          <div className="grid grid-cols-3 gap-8 text-center">
+        <div className="bg-[#007AFF] text-white p-4">
+          <div className="grid grid-cols-3 gap-2 text-center">
             <div>
-              <p className="text-sm opacity-80">SEC</p>
-              <p className="font-bold text-lg">{ticketData.sec}</p>
+              <p className="text-[10px] opacity-80 mb-1">SEC</p>
+              <p className="font-bold text-xs">{ticketData.sec}</p>
             </div>
             <div>
-              <p className="text-sm opacity-80">ROW</p>
-              <p className="font-bold text-lg">{ticketData.row}</p>
+              <p className="text-[10px] opacity-80 mb-1">ROW</p>
+              <p className="font-bold text-xs">{ticketData.row}</p>
             </div>
             <div>
-              <p className="text-sm opacity-80">SEAT</p>
-              <p className="font-bold text-lg">{ticketData.sit}</p>
+              <p className="text-[10px] opacity-80 mb-1">SEAT</p>
+              <p className="font-bold text-xs">{ticketData.sit}</p>
             </div>
           </div>
         </div>
@@ -151,7 +152,9 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
 
       <div className="p-4 flex gap-4">
         <button 
-          onClick={() => navigate("/transfer")}
+          onClick={() => navigate("/transfer", { 
+            state: { ticketCount: ticketData.ticketCount } 
+          })}
           className="flex-1 py-4 text-center text-white font-medium bg-[#007AFF] rounded-md hover:bg-[#0066CC] transition-colors"
         >
           Transfer
