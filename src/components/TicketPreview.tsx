@@ -35,9 +35,9 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
 
   return (
     <Card className="w-full max-w-md mx-auto overflow-hidden bg-white shadow-lg animate-fade-in">
-      {/* Dark header section */}
-      <div className="bg-[#222222] text-white p-6">
-        <h2 className="text-xl font-semibold text-center mb-4">Standard Ticket</h2>
+      {/* Dark blue header section - smaller padding */}
+      <div className="bg-[#0EA5E9] text-white p-4">
+        <h2 className="text-lg font-semibold text-center">Standard Ticket</h2>
       </div>
 
       {/* Ticket info section */}
@@ -58,32 +58,34 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
         </div>
       </div>
 
-      {/* Scrollable content area */}
-      <ScrollArea className="h-[400px] w-full">
-        <div className="p-4 space-y-4">
-          <div className="relative h-48">
-            <img
-              src="https://asset.cloudinary.com/del59phog/06ba239f573b08c6fbb97797f4e6d065"
-              alt="Event"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
-              <h3 className="text-lg font-semibold">{ticketData.title}</h3>
-              <p className="text-sm mt-1">{ticketData.dateTime} • {ticketData.venue}</p>
+      {/* Horizontal scrollable content area */}
+      <ScrollArea className="w-full" orientation="horizontal">
+        <div className="inline-flex p-4 space-x-4 min-w-full">
+          <div className="flex-none w-full max-w-md space-y-4">
+            <div className="relative h-48">
+              <img
+                src="/lovable-uploads/5f96390f-e303-45cf-ae49-f5d1d9e67f6f.png"
+                alt="Event"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                <h3 className="text-lg font-semibold">{ticketData.title}</h3>
+                <p className="text-sm mt-1">{ticketData.dateTime} • {ticketData.venue}</p>
+              </div>
             </div>
-          </div>
 
-          <button className="w-full bg-[#007AFF] text-white py-3 rounded-md text-center mb-4">
-            View Barcode
-          </button>
-          <button className="w-full border border-[#007AFF] text-[#007AFF] py-3 rounded-md text-center">
-            Ticket Details
-          </button>
+            <button className="w-full bg-[#007AFF] text-white py-3 rounded-md text-center mb-4">
+              View Barcode
+            </button>
+            <button className="w-full border border-[#007AFF] text-[#007AFF] py-3 rounded-md text-center">
+              Ticket Details
+            </button>
 
-          {/* Ticketmaster verification */}
-          <div className="flex items-center justify-center gap-2 py-4 text-gray-600">
-            <Shield className="w-5 h-5" />
-            <span className="text-sm">Ticketmaster.Verified</span>
+            {/* Ticketmaster verification */}
+            <div className="flex items-center justify-center gap-2 py-4 text-gray-600">
+              <Shield className="w-5 h-5" />
+              <span className="text-sm">Ticketmaster.Verified</span>
+            </div>
           </div>
         </div>
       </ScrollArea>
