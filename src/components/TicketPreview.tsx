@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';  // Add useEffect
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
@@ -20,6 +20,16 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
   const navigate = useNavigate();
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollRef = useRef(null);
+  const [imageError, setImageError] = useState(false);
+
+  const imageUrl = "https://res.cloudinary.com/del59phog/image/upload/v1739030225/Justin_Timberlake_Lists_127-Acre_Nashville_Area_Property_for_10_Million_r1dsid.jpg";
+  const fallbackImage = "/lovable-uploads/5f96390f-e303-45cf-ae49-f5d1d9e67f6f.png";
+
+  // Preload image
+  useEffect(() => {
+    const img = new Image();
+    img.src = imageUrl;
+  }, []);
 
   const scrollToSlide = (index: number) => {
     setActiveSlide(index);
@@ -58,11 +68,16 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
         </div>
 
         <div className="space-y-4">
-          <div className="relative h-48">
+          <div className="relative h-56"> {/* Keep the height */}
             <img
-              src="/lovable-uploads/5f96390f-e303-45cf-ae49-f5d1d9e67f6f.png"
+              src={imageError ? fallbackImage : imageUrl}
               alt="Event"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover" // Changed back to object-cover and removed bg-gray-100
+              onError={() => {
+                console.error('Image failed to load, falling back to default');
+                setImageError(true);
+              }}
+              style={{ objectPosition: 'center 20%' }} // Added to control focus point of image
             />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
               <h3 className="text-lg font-semibold">{ticketData.title}</h3>
