@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { parse, format } from "date-fns";
+import { parse } from "date-fns";
+import { useToast } from "./ui/use-toast";
 
 const TicketForm = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     sec: "",
     row: "",
@@ -24,31 +26,59 @@ const TicketForm = () => {
     e.preventDefault();
     
     if (!formData.dateTime) {
-      console.error('Date and time is required');
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Date and time is required",
+      });
       return;
     }
 
     try {
-      // Parse the input date string and format it to ISO string for PostgreSQL
-      const parsedDate = parse(formData.dateTime, 'EEE, MMM d h:mm a', new Date());
+      // Parse the input date string with error handling
+      let parsedDate;
+      try {
+        parsedDate = parse(formData.dateTime, 'EEE, MMM d h:mm a', new Date());
+        if (isNaN(parsedDate.getTime())) {
+          throw new Error('Invalid date format');
+        }
+      } catch (dateError) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Please enter date in format: Mon, Feb 03 7:30 PM",
+        });
+        return;
+      }
+
       const formattedDate = parsedDate.toISOString();
 
-      const { data, error } = await supabase.from('tickets').insert([{
+      const { error } = await supabase.from('tickets').insert([{
         sec: formData.sec,
         row_number: formData.row,
         seat: formData.sit,
         title: formData.title,
         venue: formData.venue,
         date_time: formattedDate,
-      }]).select();
+      }]);
 
       if (error) {
-        console.error('Error:', error);
-        throw error;
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to create ticket. Please try again.",
+        });
+        return;
       }
 
+      // If successful, navigate to preview
       navigate("/preview", { state: formData });
     } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+      });
       console.error('Error creating ticket:', error);
     }
   };
