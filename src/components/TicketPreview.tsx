@@ -54,15 +54,15 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
         <div className="bg-[#007AFF] text-white p-4">
           <div className="grid grid-cols-3 gap-2 text-center">
             <div>
-              <p className="text-[10px] opacity-80 mb-1">SEC</p>
+              <p className="text-xs opacity-80 mb-1">SEC</p>
               <p className="font-bold text-xs">{ticketData.sec}</p>
             </div>
             <div>
-              <p className="text-[10px] opacity-80 mb-1">ROW</p>
+              <p className="text-xs opacity-80 mb-1">ROW</p>
               <p className="font-bold text-xs">{ticketData.row}</p>
             </div>
             <div>
-              <p className="text-[10px] opacity-80 mb-1">SEAT</p>
+              <p className="text-xs opacity-80 mb-1">SEAT</p>
               <p className="font-bold text-xs">{ticketData.sit}</p>
             </div>
           </div>
