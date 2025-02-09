@@ -14,6 +14,7 @@ interface TicketPreviewProps {
     venue: string;
     dateTime: string;
     ticketCount?: number; // Add ticketCount
+    imageUrl: string; // Add imageUrl
   };
 }
 
@@ -23,14 +24,13 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
   const scrollRef = useRef(null);
   const [imageError, setImageError] = useState(false);
 
-  const imageUrl = "https://res.cloudinary.com/del59phog/image/upload/v1739030225/Justin_Timberlake_Lists_127-Acre_Nashville_Area_Property_for_10_Million_r1dsid.jpg";
   const fallbackImage = "/lovable-uploads/5f96390f-e303-45cf-ae49-f5d1d9e67f6f.png";
 
   // Preload image
   useEffect(() => {
     const img = new Image();
-    img.src = imageUrl;
-  }, []);
+    img.src = ticketData.imageUrl;
+  }, [ticketData.imageUrl]);
 
   const scrollToSlide = (index: number) => {
     setActiveSlide(index);
@@ -71,7 +71,7 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
         <div className="space-y-4">
           <div className="relative h-56"> {/* Keep the height */}
             <img
-              src={imageError ? fallbackImage : imageUrl}
+              src={imageError ? fallbackImage : ticketData.imageUrl || fallbackImage}
               alt="Event"
               className="w-full h-full object-cover" // Changed back to object-cover and removed bg-gray-100
               onError={() => {
@@ -122,6 +122,9 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
     );
   }
 
+  // Convert ticketCount to number and ensure it's at least 1
+  const numberOfTickets = Math.max(1, parseInt(ticketData.ticketCount?.toString() || '1', 10));
+
   return (
     <Card className="w-screen max-w-full mx-auto overflow-hidden bg-white shadow-lg animate-fade-in">
       <div 
@@ -129,7 +132,8 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
         className="overflow-x-auto scrollbar-hide snap-x snap-mandatory w-full"
       >
         <div className="inline-flex w-full">
-          {[0, 1, 2].map((_, index) => (
+          {/* Replace static array with dynamic one based on ticketCount */}
+          {Array.from({ length: numberOfTickets }, (_, index) => (
             <div key={index} className="snap-start w-full flex-none">
               {renderTicket()}
             </div>
@@ -138,7 +142,8 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
       </div>
 
       <div className="flex justify-center space-x-2 py-4">
-        {[0, 1, 2].map((index) => (
+        {/* Update pagination dots to match ticket count */}
+        {Array.from({ length: numberOfTickets }, (_, index) => (
           <button
             key={index}
             onClick={() => scrollToSlide(index)}
