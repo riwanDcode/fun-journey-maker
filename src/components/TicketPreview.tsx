@@ -46,7 +46,7 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
 
   const renderTicket = () => (
     <div className="flex-none w-screen max-w-full px-4">
-      <div className="border-2 border-[#007AFF] rounded-2xl overflow-hidden">
+      <div className="rounded-2xl overflow-hidden shadow-md border border-gray-300"> {/* Added shadow-md and border */}
         <div className="bg-[#0066CC] text-white p-4">
           <h2 className="text-lg font-semibold text-center">Standard Ticket</h2>
         </div>
@@ -80,7 +80,7 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
               }}
               style={{ objectPosition: 'center 20%' }} // Added to control focus point of image
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4 text-center"> {/* Added text-center */}
               <h3 className="text-lg font-semibold">{ticketData.title}</h3>
               <p className="text-sm mt-1">{ticketData.dateTime} • {ticketData.venue}</p>
             </div>
