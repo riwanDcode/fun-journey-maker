@@ -44,7 +44,14 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
     }
   };
 
-  const renderTicket = () => (
+  // Function to get incremented seat number
+  const getIncrementedSeat = (index: number) => {
+    const initialSeat = parseInt(ticketData.sit);
+    if (isNaN(initialSeat)) return ticketData.sit; // Return original if not a number
+    return (initialSeat + index).toString();
+  };
+
+  const renderTicket = (index: number) => (
     <div className="flex-none w-screen max-w-full px-4">
       <div className="rounded-2xl overflow-hidden shadow-md border border-gray-300"> {/* Added shadow-md and border */}
         <div className="bg-[#0066CC] text-white p-4">
@@ -63,7 +70,7 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
             </div>
             <div>
               <p className="text-xs opacity-80 mb-1">SEAT</p>
-              <p className="font-bold text-xs">{ticketData.sit}</p>
+              <p className="font-bold text-xs">{getIncrementedSeat(index)}</p>
             </div>
           </div>
         </div>
@@ -135,7 +142,7 @@ const TicketPreview = ({ ticketData }: TicketPreviewProps) => {
           {/* Replace static array with dynamic one based on ticketCount */}
           {Array.from({ length: numberOfTickets }, (_, index) => (
             <div key={index} className="snap-start w-full flex-none">
-              {renderTicket()}
+              {renderTicket(index)}
             </div>
           ))}
         </div>
